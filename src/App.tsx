@@ -1,100 +1,64 @@
 import { useEffect, useState } from 'react'
-import { debounce } from 'lodash';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory
+} from 'react-router-dom';
 import movieLogo from './movie.svg'
 import Header from './Header';
+import MovieDetails from './MovieDetails';
 import { search, getPopular, getConfig } from './movies.service';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+
 import { ApiConfig, Movie } from './models';
 
 function App() {
+
   const [apiConfig, setApiConfig] = useState<ApiConfig>();
-  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const term = (e.target as HTMLInputElement).value;
-    searchMovies(term);
-  };
-
-  const searchMovies = async (term: string) => {
-    console.log(`term: ${term}, searchTerm: ${searchTerm}`);
-    const movies = await search(term);
-    setPopularMovies(movies.results);
-    return movies;
-  };
-  var debouncedSearch = debounce(searchMovies, 200);
-
-  const onChange = (event: React.SyntheticEvent<Element, Event>, value: any, reason: string, details: any) => {
-    const term = (event.target as HTMLInputElement).value;
-    searchMovies(term);
-    console.log('onchange', event, value, reason, details);
-  }
-
-  const onInputChange = async (event: React.SyntheticEvent<Element, Event>, value: any, reason: string) => {
-    const term = (event.target as HTMLInputElement).value;
-    console.log('setting term', term);
-    setSearchTerm(term);
-    debouncedSearch(term);
-    console.log('onInputChange', event, value, reason);
-  }
+  const [results, setResults] = useState<Movie[]>([]);
 
   const getImagePath = (path: string) => {
     let url: string;
-    if (!path) {
+    if (!path || !apiConfig) {
       url = movieLogo;
     } else {
       url = `${apiConfig?.images.base_url}${apiConfig?.images.backdrop_sizes[0]}${path}`;
     }
-    console.log('url', url);
     return url;
   }
 
-
-
   useEffect(() => {
-    Promise.all([
-      getConfig(),
-      getPopular()
-    ]).then(([config, movies]) => {
-      setApiConfig(config);
-      setPopularMovies(movies);
-    });
+    getConfig().then(c => setApiConfig(c));
   }, []);
 
   return (
-    <div>
-      <Header />
-      <div className='input-controls max-w-screen-md mx-auto'>
-        <Autocomplete freeSolo
-          options={Array(10).fill(undefined).map((_, i) => i.toString())}
-          onChange={(e, value, reason, details) => onChange(e, value, reason, details)}
-          onInputChange={(e, value, reason) => onInputChange(e, value, reason)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Search"
-              InputProps={{
-                ...params.InputProps,
-                type: 'search',
-              }}
-            />
-          )}
-        />
-        <button>Search</button>
+    <Router>
+      <Header showMovies={(movies) => setResults(movies)} />
+      <div className='mx-4 my-2'>
+        <Switch>
+          <Route path="/:id">
+            <MovieDetails getImagePath={getImagePath} />
+          </Route>
+          <Route path="/">
+            <div className='grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+              {results.map((m) => (
+                <Link to={`/${m.id}`}>
+                  <div key={m.id} className='mb-10 bg-center bg-cover flex flex-col justify-end min-h-fit' style={{
+                    backgroundImage: `url('${getImagePath(m.backdrop_path)}')`
+                  }}>
+                    <div className='mt-12 -mb-10 p-2 text-white bg-gradient-to-b from-transparent to-black'>
+                      <h3 className='text-2xl mb-1'>{m.title}</h3>
+                      <div className='line-clamp-3 text-xs'>{m.overview}</div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </Route>
+        </Switch>
       </div>
-      <div className='flex flex-wrap'>
-        {popularMovies.map((m) => (
-          <div key={m.id} className='flex w-1/3 flex-col mb-4 p-2 bg-center bg-cover' style={{
-            backgroundImage: `url('${getImagePath(m.backdrop_path)}')`
-          }}>
-            <h3 className='my-8'>{m.title}</h3>
-            <div className='line-clamp-3'>{m.overview}</div>
-          </div>
-        ))}
-      </div>
-    </div>
+    </Router>
   )
 }
 

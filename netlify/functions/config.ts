@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { apiKey } from './constants';
+import { apiKey, apiBase } from './constants';
 import { Handler } from '@netlify/functions';
 
-const url = 'https://api.themoviedb.org/3/configuration';
+const url = `${apiBase}configuration`;
 
 const handler: Handler = async (event, context) => {
   const response = await axios.get(url, {

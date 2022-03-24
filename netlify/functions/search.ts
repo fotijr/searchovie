@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { apiKey } from './constants';
+import { apiKey, apiBase } from './constants';
 import { Handler } from '@netlify/functions';
 
-const url = 'https://api.themoviedb.org/3/search/movie';
+const url = `${apiBase}search/movie`;
+
 
 const handler: Handler = async (event, context) => {
   const split = event.path.split('/');

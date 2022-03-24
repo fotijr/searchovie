@@ -23,3 +23,7 @@ yarn dev
 # build the app
 yarn build
 ```
+
+## Future enhancements
+- Paginating results.
+- Autocomplete to include year and movie poster thumbnail.

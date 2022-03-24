@@ -38,19 +38,21 @@ function App() {
       <div className='mx-4 my-2'>
         <Switch>
           <Route path="/:id">
-            <MovieDetails />
+            <MovieDetails getImagePath={getImagePath} />
           </Route>
           <Route path="/">
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+            <div className='grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
               {results.map((m) => (
-                <div key={m.id} className='mb-8 bg-center bg-cover flex flex-col justify-end min-h-fit' style={{
-                  backgroundImage: `url('${getImagePath(m.backdrop_path)}')`
-                }}>
-                  <div className='mt-8 -mb-6 p-2 text-white bg-gradient-to-b from-transparent to-black'>
-                    <h3 className='text-2xl mb-1'>{m.title}</h3>
-                    <div className='line-clamp-3 text-xs'>{m.overview}</div>
+                <Link to={`/${m.id}`}>
+                  <div key={m.id} className='mb-10 bg-center bg-cover flex flex-col justify-end min-h-fit' style={{
+                    backgroundImage: `url('${getImagePath(m.backdrop_path)}')`
+                  }}>
+                    <div className='mt-12 -mb-10 p-2 text-white bg-gradient-to-b from-transparent to-black'>
+                      <h3 className='text-2xl mb-1'>{m.title}</h3>
+                      <div className='line-clamp-3 text-xs'>{m.overview}</div>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </Route>

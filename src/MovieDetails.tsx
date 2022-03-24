@@ -3,31 +3,41 @@ import { useParams } from "react-router-dom";
 import { MovieDetails as Movie } from "./models";
 import { get } from "./movies.service";
 
-function MovieDetails() {
+type MovieDetailsProps = {
+  getImagePath: (path: string) => string;
+};
+
+function MovieDetails({ getImagePath }: MovieDetailsProps) {
   const [movie, setMovie] = useState<Movie>();
   let { id } = useParams() as { id: string };
 
 
   useEffect(() => {
-    console.log('id', id);
     if (id) {
       get(parseInt(id, 10)).then(m => setMovie(m));
     }
   }, [id]);
 
-  return <div>
-    {(!movie || movie.success === false)
-      ? <h2>Didn't work</h2>
-      : <div>
-        <h2>{movie.title}</h2>
-        <h3>{movie.tagline}</h3>
+  let body;
+  if (!movie) {
+    body = <span>Loading movie details...</span>;
+  } else if (movie.success === false) {
+    body = <h2>Sorry, we couldn't find that movie.</h2>;
+  } else {
+    body = <div className="flex m-8">
+      <div className="mr-8">
+        <img src={getImagePath(movie.poster_path)} alt={movie.title} />
+      </div>
+      <div>
+        <h2 className="text-3xl">{movie.title}</h2>
+        <h3 className="font-light mb-4">{movie.tagline}</h3>
         <p>{movie.overview}</p>
       </div>
-    }
-    <div>
-      {JSON.stringify(movie, null, '  ')}
-    </div>
+    </div>;
+  }
 
+  return <div>
+    {body}
   </div>
 };
 

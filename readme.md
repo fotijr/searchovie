@@ -27,3 +27,4 @@ yarn build
 ## Future enhancements
 - Paginating results.
 - Autocomplete to include year and movie poster thumbnail.
+- Restore search criteria from query param.

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Movie } from './models';
 import { debounce } from 'lodash';
 import { search, getPopular } from './movies.service';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 type HeaderProps = {
     /** Show list of movies */
@@ -59,9 +59,14 @@ function Header({ showMovies }: HeaderProps) {
 
     return <div>
         <div className='flex bg-ovieblue items-center'>
+            <Link to="/">
             <span className='mx-8 text-white font-sans	font-black text-2xl'>searchovie</span>
+            </Link>
             <Autocomplete freeSolo
-            className='my-2 flex-grow max-w-4xl'
+            className='my-2 flex-grow max-w-4xl text-white'
+                sx={{
+                    color: 'white',
+                }}
                 noOptionsText="No movies found"
                 getOptionLabel={(m: Movie | string) => (m as Movie).title || m as string}
                 options={suggestions}
@@ -72,6 +77,10 @@ function Header({ showMovies }: HeaderProps) {
                     <TextField
                         {...params}
                         label="Search"
+                        sx={{
+                            color: 'white'
+                        }}
+                        className='text-white'
                         InputProps={{
                             ...params.InputProps,
                             type: 'search',
@@ -80,7 +89,7 @@ function Header({ showMovies }: HeaderProps) {
                 )}
             />
             <button 
-            className='bg-white px-8 py-4 text-ovieblue mx-4'
+            className='bg-white px-8 py-3 text-ovieblue mx-4 rounded-xl text-xl tracking-wide font-light'
             onClick={() => { handleUserInitiatedSearch(searchTerm) }}>Search</button>
         </div>
 

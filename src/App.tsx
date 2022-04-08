@@ -40,7 +40,7 @@ function App() {
             <MovieDetails getImagePath={getImagePath} />
           </Route>
           <Route path="/">
-            <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 auto-rows-max'>
+            <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-max'>
               {results.map((m) => (
                 <Link key={m.id} to={`/${m.id}`} className="flex shadow-lg">
                   <div className='mb-10 bg-center bg-cover flex flex-col justify-end min-h-fit' style={{

@@ -11,7 +11,8 @@ const handler: Handler = async (event, context) => {
   const response = await axios.get(url, {
     params: {
       api_key: apiKey,
-      query: searchTerm
+      query: searchTerm,
+      include_adult: false
     }
   });
 

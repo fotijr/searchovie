@@ -84,7 +84,7 @@ export interface MovieDetails {
     poster_path: string;
     production_companies: ProductionCompany[];
     production_countries: ProductionCountry[];
-    release_date: string;
+    release_date: Date;
     revenue: number;
     runtime: number;
     spoken_languages: SpokenLanguage[];

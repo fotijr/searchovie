@@ -3,15 +3,14 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useHistory
-} from 'react-router-dom';
+  Link} from 'react-router-dom';
 import movieLogo from './movie.svg'
 import Header from './Header';
 import MovieDetails from './MovieDetails';
-import { search, getPopular, getConfig } from './movies.service';
+import { getConfig } from './movies.service';
 
 import { ApiConfig, Movie } from './models';
+import Footer from './Footer';
 
 function App() {
 
@@ -35,19 +34,19 @@ function App() {
   return (
     <Router>
       <Header showMovies={(movies) => setResults(movies)} />
-      <div className='mx-4 my-2'>
+      <div className='mx-4 my-2 grow'>
         <Switch>
           <Route path="/:id">
             <MovieDetails getImagePath={getImagePath} />
           </Route>
           <Route path="/">
-            <div className='grid gap-1 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+            <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 auto-rows-max'>
               {results.map((m) => (
-                <Link to={`/${m.id}`}>
-                  <div key={m.id} className='mb-10 bg-center bg-cover flex flex-col justify-end min-h-fit' style={{
+                <Link key={m.id} to={`/${m.id}`} className="flex shadow-lg">
+                  <div className='mb-10 bg-center bg-cover flex flex-col justify-end min-h-fit' style={{
                     backgroundImage: `url('${getImagePath(m.backdrop_path)}')`
                   }}>
-                    <div className='mt-12 -mb-10 p-2 text-white bg-gradient-to-b from-transparent to-black'>
+                    <div className='mt-40 -mb-10 p-3 text-white bg-gradient-to-b from-transparent via-black to-black'>
                       <h3 className='text-2xl mb-1'>{m.title}</h3>
                       <div className='line-clamp-3 text-xs'>{m.overview}</div>
                     </div>
@@ -58,6 +57,7 @@ function App() {
           </Route>
         </Switch>
       </div>
+      <Footer />
     </Router>
   )
 }

@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply font-sans;
+}
+
+fieldset {
+  @apply border-white !important;
+}
+
+input {
+  @apply text-white !important;
+}
+
+label {
+  @apply text-slate-300 !important;
+}
+
+footer a {
+  @apply border-b-2 px-1 border-transparent;
+}
+
+footer a:hover {
+  @apply border-b-ovieblue;
+}

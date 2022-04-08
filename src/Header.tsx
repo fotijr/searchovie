@@ -1,8 +1,6 @@
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
-// import { useLocation } from "react-router-dom";
-// import { useNavigate } from 'react-router-dom';
 
 import { Movie } from './models';
 import { debounce } from 'lodash';
@@ -42,6 +40,7 @@ function Header({ showMovies }: HeaderProps) {
         } else {
             // movie selected from auto-complete, go to movie page
             history.push(`/${movie.id}`);
+            setSearchTerm('');
         }
     }
 
@@ -57,42 +56,33 @@ function Header({ showMovies }: HeaderProps) {
         getPopular().then(m => showMovies(m));
     }, []);
 
-    return <div>
-        <div className='flex bg-ovieblue items-center'>
-            <Link to="/">
-            <span className='mx-8 text-white font-sans	font-black text-2xl'>searchovie</span>
-            </Link>
-            <Autocomplete freeSolo
+    return <div className='flex bg-ovieblue text-white items-center mb-6'>
+        <Link to="/">
+            <span className='mx-8 font-sans font-black text-2xl'>searchovie</span>
+        </Link>
+        <Autocomplete freeSolo
             className='my-2 flex-grow max-w-4xl text-white'
-                sx={{
-                    color: 'white',
-                }}
-                noOptionsText="No movies found"
-                getOptionLabel={(m: Movie | string) => (m as Movie).title || m as string}
-                options={suggestions}
-                onChange={(e, value, reason, details) => handleUserInitiatedSearch(details?.option as Movie)}
-                onInputChange={(e, value, reason) => onInputChange(e, value, reason)}
-                disableClearable
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Search"
-                        sx={{
-                            color: 'white'
-                        }}
-                        className='text-white'
-                        InputProps={{
-                            ...params.InputProps,
-                            type: 'search',
-                        }}
-                    />
-                )}
-            />
-            <button 
-            className='bg-white px-8 py-3 text-ovieblue mx-4 rounded-xl text-xl tracking-wide font-light'
+            noOptionsText="No movies found"
+            getOptionLabel={(m: Movie | string) => (m as Movie).title || m as string}
+            options={suggestions}
+            onChange={(e, value, reason, details) => handleUserInitiatedSearch(details?.option as Movie)}
+            onInputChange={(e, value, reason) => onInputChange(e, value, reason)}
+            disableClearable
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label="Search"
+                    className='text-white'
+                    InputProps={{
+                        ...params.InputProps,
+                        type: 'search'
+                    }}
+                />
+            )}
+        />
+        <button
+            className='bg-white hover:bg-gray-100 px-8 py-3 text-ovieblue mx-4 rounded-lg text-xl tracking-wider font-bold'
             onClick={() => { handleUserInitiatedSearch(searchTerm) }}>Search</button>
-        </div>
-
     </div>
 };
 

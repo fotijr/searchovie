@@ -6,7 +6,6 @@ const handler: Handler = async (event, context) => {
   const split = event.path.split('/');
   const movieId = split[split.length - 1];
   let url = `${apiBase}movie/${movieId}`;
-  console.log('server movie ID', movieId, url);
   const response = await axios.get(url, {
     params: {
       api_key: apiKey

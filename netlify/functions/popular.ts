@@ -14,7 +14,11 @@ const handler: Handler = async (event, context) => {
   return {
     statusCode: 200,
     body: JSON.stringify(response.data),
-    contentType: 'application/json'
+    headers: {
+      // cache for 4 hours
+      'Cache-Control': 'public, max-age=14400',
+      'content-type': 'application/json'
+    }
   };
 }
 

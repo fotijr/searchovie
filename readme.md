@@ -14,7 +14,7 @@ Access to the API requires an API key (obtained when registering a free account)
 
 ## Development scripts
 ```
-# run the front-end and backend
+# run the front-end & back-end
 yarn dev:all
 
 # run the front-end only
@@ -28,3 +28,4 @@ yarn build
 - Paginating results.
 - Autocomplete to include year and movie poster thumbnail.
 - Restore search criteria from query param.
+- Browse movies by genre.

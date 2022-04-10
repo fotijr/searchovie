@@ -12,7 +12,7 @@ function Footer() {
         </a>
       </div>
       <div>
-        <a href="https://fotijr.com" target="_blank">
+        <a href="https://fotijr.com/blog/2022/searchovie/" target="_blank">
           why
         </a>
       </div>
